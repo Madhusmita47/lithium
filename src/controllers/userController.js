@@ -74,8 +74,10 @@ const deleteUser = async function (req, res) {
   }
 
   let userData = req.body;
-  userData.isDeleted=true
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId },{$set:userData},{new:true});
+  // userData.isDeleted=true
+  let updatedUser = await userModel.findOneAndUpdate({ _id: userId,isDeleted:false },{$set:{isDeleted:true}},{new:true});
+
+  if(!updatedUser)return res.send({status: false, msg: "Userdata not exist or already deleted!"})
   res.send({ status:true, data: updatedUser });
 };
 
